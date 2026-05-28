@@ -11,7 +11,7 @@ const otpSchema=mongoose.Schema({
     },
     action:{
         type:String,
-        enum:['account-verification','event_booking'],
+        enum:['account-verification','event-booking'],
         required:true
     },
     createdAt:{
