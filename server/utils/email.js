@@ -41,7 +41,7 @@ exports.sendOtpEmail=async (email,otp,type)=>{
     }
 }
 
-const sendBookingEmail = async (userEmail, userName, eventTitle) => {
+exports.sendBookingEmail = async (userEmail, userName, eventTitle) => {
     try {
         const mailOptions = {
             from: process.env.EMAIL_USER,

@@ -9,9 +9,10 @@ const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString()
 exports.sendBookingOtp=async (req,res)=>{
     try {
         const otp = generateOTP();
+        console.log(`${otp}`)
         await OTP.findOneAndDelete({email:req.user.email,action:'event-booking'});
-        await OTP.create({ email: req.user.email, otp, action: 'event_booking' });
-        await sendOTPEmail(req.user.email, otp, 'event_booking');
+        await OTP.create({ email: req.user.email, otp, action: 'event-booking' });
+        await sendOtpEmail(req.user.email, otp, 'event-booking');
         res.json({ message: 'OTP sent successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Error sending Booking OTP', error: error.message });
@@ -65,7 +66,7 @@ exports.confirmBooking=async (req,res)=>{
         event.availableSeats-=1;
         await event.save();
         await sendBookingEmail(booking.userId.email, booking.userId.name, booking.eventId.title);
-
+        await booking.save();
         res.json({ message: 'Booking confirmed successfully', booking })
     } catch (error) {
         res.status(500).json({message:'server error in confirm booking',error:error.message});
@@ -85,7 +86,7 @@ exports.getMyBookings=async (req,res)=>{
     }
 }
 
-exports.cancelBooking=async (req,reas)=>{
+exports.cancelBooking=async (req,res)=>{
     try {
         const booking=await Booking.findById(req.params.id);
         if(!booking)    return res.status(404).json({message:'Booking not found...'});

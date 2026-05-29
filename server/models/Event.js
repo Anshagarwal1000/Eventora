@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { getMaxListeners } = require('./User');
 
 const eventSchema = new mongoose.Schema(
     {
